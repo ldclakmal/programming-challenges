@@ -1,16 +1,11 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-package Algorithms.Warmup;
+package lk.avix.Algorithms.Warmup;
 
 import java.util.Scanner;
 
 /**
- *
  * @author Chanaka
  */
-public class Solve_me_first {
+public class SolveMeFirst {
 
     static int solveMeFirst(int a, int b) {
         return a + b;

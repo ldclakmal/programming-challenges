@@ -1,13 +1,8 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-package Algorithms.Search;
+package lk.avix.Algorithms.Search;
 
 import java.util.Scanner;
 
 /**
- *
  * @author Chanaka
  */
 public class Flowers {
@@ -24,7 +19,7 @@ public class Flowers {
             C[i] = in.nextInt();
         }
 
-        
+
         int result = 0;
         System.out.println(result);
 

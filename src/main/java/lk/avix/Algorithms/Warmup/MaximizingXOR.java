@@ -1,16 +1,11 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-package Algorithms.Warmup;
+package lk.avix.Algorithms.Warmup;
 
 import java.util.Scanner;
 
 /**
- *
  * @author Chanaka
  */
-public class Maximizing_XOR {
+public class MaximizingXOR {
 
     static int maxXor(int l, int r) {
         int max = 0;

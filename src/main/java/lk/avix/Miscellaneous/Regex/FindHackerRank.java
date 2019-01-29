@@ -1,13 +1,8 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-package Miscellaneous.Regex;
+package lk.avix.Miscellaneous.Regex;
 
 import java.util.Scanner;
 
 /**
- *
  * @author Chanaka
  */
 public class FindHackerRank {

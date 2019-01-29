@@ -1,16 +1,11 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-package Algorithms.Warmup;
+package lk.avix.Algorithms.Warmup;
 
 import java.util.Scanner;
 
 /**
- *
  * @author Chanaka
  */
-public class Gem_Stones {
+public class GemStones {
 
     public static void main(String[] args) {
         Scanner in = new Scanner(System.in);

@@ -1,16 +1,11 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-package Algorithms.Search;
+package lk.avix.Algorithms.Search;
 
 import java.util.Scanner;
 
 /**
- *
  * @author Chanaka
  */
-public class Lonely_Integer {
+public class LonelyInteger {
 
     public static void main(String[] args) {
         Scanner in = new Scanner(System.in);

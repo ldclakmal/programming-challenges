@@ -1,16 +1,11 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-package Algorithms.Warmup;
+package lk.avix.Algorithms.Warmup;
 
 import java.util.Scanner;
 
 /**
- *
  * @author Chanaka
  */
-public class The_Love_Letter_Mystery {
+public class TheLoveLetterMystery {
 
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
