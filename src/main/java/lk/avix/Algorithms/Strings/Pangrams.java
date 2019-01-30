@@ -1,4 +1,4 @@
-package lk.avix.lk.avix.Algorithms.Strings;
+package lk.avix.Algorithms.Strings;
 
 import java.util.Scanner;
 
