@@ -10,7 +10,7 @@
     <version>1.0-SNAPSHOT</version>
 
     <build>
-        <finalName>wso2-http-transport</finalName>
+        <finalName>hackerrank</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
