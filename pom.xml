@@ -26,6 +26,7 @@
     <modules>
         <module>hackerrank</module>
         <module>leetcode</module>
+        <module>interview</module>
     </modules>
 
     <properties>
