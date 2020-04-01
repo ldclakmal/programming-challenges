@@ -2,6 +2,7 @@ package lk.avix.Problems;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.PriorityQueue;
 
 /**
@@ -40,7 +41,7 @@ class Q460_LfuCache {
         } else {
             if (capacity != 0) {
                 if (cache.size() == capacity) {
-                    remove(queue.peek());
+                    remove(Objects.requireNonNull(queue.peek()));
                 }
                 add(new Node(key, value, 1, timer++));
             }
@@ -56,37 +57,19 @@ class Q460_LfuCache {
         cache.remove(node.key);
         queue.remove(node);
     }
-}
 
-class Node {
+    static class Node {
 
-    int key;
-    int val;
-    int count;
-    int timer;
+        int key;
+        int val;
+        int count;
+        int timer;
 
-    public Node(int k, int v, int c, int t) {
-        this.key = k;
-        this.val = v;
-        this.count = c;
-        this.timer = t;
-    }
-}
-
-class Q460_Test {
-
-    public static void main(String[] args) {
-        Q460_LfuCache cache = new Q460_LfuCache(2 /* capacity */);
-
-        cache.put(1, 1);
-        cache.put(2, 2);
-        System.out.println(cache.get(1));       // returns 1
-        cache.put(3, 3);    // evicts key 2
-        System.out.println(cache.get(2));       // returns -1 (not found)
-        System.out.println(cache.get(3));       // returns 3.
-        cache.put(4, 4);    // evicts key 1.
-        System.out.println(cache.get(1));       // returns -1 (not found)
-        System.out.println(cache.get(3));       // returns 3
-        System.out.println(cache.get(4));       // returns 4
+        public Node(int k, int v, int c, int t) {
+            this.key = k;
+            this.val = v;
+            this.count = c;
+            this.timer = t;
+        }
     }
 }

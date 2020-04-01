@@ -2,11 +2,40 @@ package lk.avix.Problems;
 
 public class Q2_AddTwoNumbers {
 
-    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+    public String add(int[] arr1, int[] arr2) {
+        ListNode l1 = convertToListNode(arr1);
+        ListNode l2 = convertToListNode(arr2);
+        ListNode ln = addTwoNumbers(l1, l2);
+        return convertToString(ln);
+    }
+
+    private ListNode convertToListNode(int[] arr) {
+        if (arr.length == 0) {
+            return null;
+        }
+        ListNode node = new ListNode(arr[0]);
+        ListNode temp = node;
+        for (int i = 1; i < arr.length; i++) {
+            temp.next = new ListNode(arr[i]);
+            temp = temp.next;
+        }
+        return node;
+    }
+
+    private String convertToString(ListNode ln) {
+        StringBuilder output = new StringBuilder();
+        while (ln != null) {
+            output.append(ln.val);
+            ln = ln.next;
+        }
+        return String.valueOf(output);
+    }
+
+    private ListNode addTwoNumbers(ListNode l1, ListNode l2) {
         return addRecursively(l1, l2, 0);
     }
 
-    public ListNode addRecursively(ListNode l1, ListNode l2, int carry) {
+    private ListNode addRecursively(ListNode l1, ListNode l2, int carry) {
         if (l1 == null && l2 == null && carry == 0) {
             return null;
         }
@@ -19,91 +48,13 @@ public class Q2_AddTwoNumbers {
         t.next = addRecursively(l1 != null ? l1.next : null, l2 != null ? l2.next : null, carry);
         return t;
     }
-}
 
-class ListNode {
-    int val;
-    ListNode next;
-    ListNode(int x) {
-        val = x;
-    }
-}
+    static class ListNode {
+        int val;
+        ListNode next;
 
-class Q2_Test {
-
-    public static void main(String[] args) {
-
-        // Input: (2 -> 4 -> 3) + (5 -> 6 -> 4)
-        // Output: 7 -> 0 -> 8
-        // Explanation: 342 + 465 = 807.
-
-        ListNode l1 = new ListNode(2);
-        l1.next = new ListNode(4);
-        l1.next.next = new ListNode(3);
-
-        ListNode l2 = new ListNode(5);
-        l2.next = new ListNode(6);
-        l2.next.next = new ListNode(4);
-
-        Q2_AddTwoNumbers solution = new Q2_AddTwoNumbers();
-        ListNode ln = solution.addTwoNumbers(l1, l2);
-
-        ListNode node = ln;
-        while (node != null) {
-            System.out.print(node.val + " -> ");
-            node = node.next;
-        }
-        System.out.println();
-
-        // l1 = [0,1]
-        // l2 = [0,1,2]
-        l1 = new ListNode(0);
-        l1.next = new ListNode(1);
-
-        l2 = new ListNode(0);
-        l2.next = new ListNode(1);
-        l2.next.next = new ListNode(2);
-
-        solution = new Q2_AddTwoNumbers();
-        ln = solution.addTwoNumbers(l1, l2);
-
-        node = ln;
-        while (node != null) {
-            System.out.print(node.val + " -> ");
-            node = node.next;
-        }
-        System.out.println();
-
-        // l1 = []
-        // l2 = [0,1]
-        l1 = null;
-        l2 = new ListNode(0);
-        l2.next = new ListNode(1);
-
-        solution = new Q2_AddTwoNumbers();
-        ln = solution.addTwoNumbers(l1, l2);
-
-        node = ln;
-        while (node != null) {
-            System.out.print(node.val + " -> ");
-            node = node.next;
-        }
-        System.out.println();
-
-        // l1 = [9,9]
-        // l2 = [1]
-        l1 = new ListNode(9);
-        l1.next = new ListNode(9);
-
-        l2 = new ListNode(1);
-
-        solution = new Q2_AddTwoNumbers();
-        ln = solution.addTwoNumbers(l1, l2);
-
-        node = ln;
-        while (node != null) {
-            System.out.print(node.val + " -> ");
-            node = node.next;
+        ListNode(int x) {
+            val = x;
         }
     }
 }
