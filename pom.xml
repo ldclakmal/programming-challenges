@@ -27,6 +27,7 @@
     <modules>
         <module>hackerrank</module>
         <module>leetcode</module>
+        <module>misc</module>
     </modules>
 
     <properties>
