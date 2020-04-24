@@ -1,4 +1,4 @@
-package lk.avix.Problems;
+package lk.avix.problems;
 
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;

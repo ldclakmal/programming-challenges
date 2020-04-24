@@ -1,4 +1,4 @@
-package lk.avix.Problems;
+package lk.avix.problems;
 
 public class Q7_ReverseInteger {
 

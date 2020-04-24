@@ -1,4 +1,4 @@
-package lk.avix.Problems;
+package lk.avix.problems;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
