@@ -26,8 +26,7 @@ public class Auth0JwkValidator {
                 "uam1DQAQB9-Tsxk1TQ5GRyMKcsD2gWt-aJsyRLtXSwmgsUxTyA6VCLlF9oJuMxg-hQKxiDS1RSXHReczw";
 
         DecodedJWT decodedJwt = JWT.decode(jwt);
-        URL url = new URL("https://gist.githubusercontent.com/ldclakmal/0fec398951b129c0c4a10202ebe11a5c/raw/" +
-                                  "e740876b4dc884d5e8a6fed0c9059ae07902ba13/jwks");
+        URL url = new URL("https://asb0zigfg2.execute-api.us-west-2.amazonaws.com/v1/jwks");
         JwkProvider provider = new UrlJwkProvider(url);
         Jwk jwk = provider.get(decodedJwt.getKeyId());
         RSAPublicKey publicKey = (RSAPublicKey) jwk.getPublicKey();
