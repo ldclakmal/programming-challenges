@@ -23,6 +23,7 @@ import org.apache.directory.server.core.partition.ldif.LdifPartition;
 import org.apache.directory.server.ldap.LdapServer;
 import org.apache.directory.server.protocol.shared.store.LdifFileLoader;
 import org.apache.directory.server.protocol.shared.transport.TcpTransport;
+import org.apache.log4j.BasicConfigurator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -149,5 +150,11 @@ public class EmbeddedDirectoryServer {
     void stopLdapService() {
         ldapServer.stop();
         workDir.delete();
+    }
+
+    public static void main(String[] args) throws Exception {
+        BasicConfigurator.configure();
+        EmbeddedDirectoryServer e = new EmbeddedDirectoryServer();
+        e.startLdapServer(20000);
     }
 }
