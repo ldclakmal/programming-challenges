@@ -1,7 +1,5 @@
 package lk.avix.jwk;
 
-import org.apache.commons.codec.binary.Base64;
-
 import java.math.BigInteger;
 import java.security.KeyFactory;
 import java.security.Signature;
@@ -34,10 +32,12 @@ public class JavaSecurityJwkValidator {
     }
 
     private static RSAPublicKey getPublicKey(String modulus, String exponent) throws Exception {
-        byte[] decodedModulus = Base64.decodeBase64(modulus);
-        byte[] decodedExponent = Base64.decodeBase64(exponent);
-        RSAPublicKeySpec spec = new RSAPublicKeySpec(new BigInteger(1, decodedModulus),
-                                                     new BigInteger(1, decodedExponent));
+//        byte[] decodedModulus = Base64.decodeBase64(modulus);
+//        byte[] decodedExponent = Base64.decodeBase64(exponent);
+        byte[] m = java.util.Base64.getUrlDecoder().decode(modulus);
+        byte[] e = java.util.Base64.getUrlDecoder().decode(exponent);
+        RSAPublicKeySpec spec = new RSAPublicKeySpec(new BigInteger(1, m),
+                                                     new BigInteger(1, e));
         return (RSAPublicKey) KeyFactory.getInstance("RSA").generatePublic(spec);
     }
 
