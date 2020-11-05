@@ -23,9 +23,6 @@ import org.apache.directory.server.core.partition.ldif.LdifPartition;
 import org.apache.directory.server.ldap.LdapServer;
 import org.apache.directory.server.protocol.shared.store.LdifFileLoader;
 import org.apache.directory.server.protocol.shared.transport.TcpTransport;
-import org.apache.log4j.BasicConfigurator;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
@@ -36,7 +33,6 @@ import java.util.List;
  */
 public class EmbeddedDirectoryServer {
 
-    private static final Logger log = LoggerFactory.getLogger(EmbeddedDirectoryServer.class);
     private static final String SCHEMA_PARTITION_NAME = "schema";
     private static final String LDAP_AUTH_TEST_PARTITION_NAME = "b7a";
     private static final String LDAP_AUTH_TEST_PARTITION_DN = "dc=BALLERINA,dc=IO";
@@ -111,7 +107,7 @@ public class EmbeddedDirectoryServer {
         File schemaPartitionDirectory = new File(instanceLayout.getPartitionsDirectory(), SCHEMA_PARTITION_NAME);
 
         if (schemaPartitionDirectory.exists()) {
-            log.info("schema partition already exists, skipping schema extraction");
+            System.out.println("Schema partition already exists, skipping schema extraction.");
         } else {
             SchemaLdifExtractor extractor = new DefaultSchemaLdifExtractor(instanceLayout.getPartitionsDirectory());
             extractor.extractOrCopy();
@@ -153,7 +149,6 @@ public class EmbeddedDirectoryServer {
     }
 
     public static void main(String[] args) throws Exception {
-        BasicConfigurator.configure();
         EmbeddedDirectoryServer e = new EmbeddedDirectoryServer();
         e.startLdapServer(20000);
     }
