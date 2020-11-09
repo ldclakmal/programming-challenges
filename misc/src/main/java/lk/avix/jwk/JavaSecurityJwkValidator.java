@@ -5,6 +5,7 @@ import java.security.KeyFactory;
 import java.security.Signature;
 import java.security.interfaces.RSAPublicKey;
 import java.security.spec.RSAPublicKeySpec;
+import java.util.Base64;
 
 public class JavaSecurityJwkValidator {
 
@@ -34,8 +35,8 @@ public class JavaSecurityJwkValidator {
     private static RSAPublicKey getPublicKey(String modulus, String exponent) throws Exception {
 //        byte[] decodedModulus = Base64.decodeBase64(modulus);
 //        byte[] decodedExponent = Base64.decodeBase64(exponent);
-        byte[] m = java.util.Base64.getUrlDecoder().decode(modulus);
-        byte[] e = java.util.Base64.getUrlDecoder().decode(exponent);
+        byte[] m = Base64.getUrlDecoder().decode(modulus);
+        byte[] e = Base64.getUrlDecoder().decode(exponent);
         RSAPublicKeySpec spec = new RSAPublicKeySpec(new BigInteger(1, m),
                                                      new BigInteger(1, e));
         return (RSAPublicKey) KeyFactory.getInstance("RSA").generatePublic(spec);

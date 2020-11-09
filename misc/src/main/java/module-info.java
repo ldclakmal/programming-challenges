@@ -3,4 +3,5 @@ module lk.avix {
     requires apacheds.all;
     requires jwks.rsa;
     requires java.jwt;
+    requires com.fasterxml.jackson.core;
 }
