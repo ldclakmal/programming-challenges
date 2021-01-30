@@ -2,13 +2,13 @@ package lk.avix.http;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.InputStream;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.security.KeyStore;
 import java.security.SecureRandom;
+import java.util.Objects;
 import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManagerFactory;
@@ -20,8 +20,9 @@ public class Client {
 
     public static void main(String[] args) throws Exception {
         SSLContext sslContext = SSLContext.getInstance("TLS");
-        String path = new File(Client.class.getClassLoader().getResource(truststore).getFile()).getAbsolutePath();
-        InputStream is = new FileInputStream(new File(path));
+        String file = Objects.requireNonNull(Client.class.getClassLoader().getResource(truststore)).getFile();
+        String path = new File(file).getAbsolutePath();
+        FileInputStream is = new FileInputStream(path);
         char[] passphrase = password.toCharArray();
         KeyStore ks = KeyStore.getInstance("PKCS12");
         ks.load(is, passphrase);
