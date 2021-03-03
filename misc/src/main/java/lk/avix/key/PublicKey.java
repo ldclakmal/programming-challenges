@@ -10,15 +10,19 @@ import java.util.Objects;
 
 public class PublicKey {
 
-    private static final String certFile = "public.crt";
+    private static final String certFile = "x509Public.crt";
 
     public static void main(String[] args) throws Exception {
         String file = Objects.requireNonNull(Client.class.getClassLoader().getResource(certFile)).getFile();
         String path = new File(file).getAbsolutePath();
-        FileInputStream is = new FileInputStream(path);
-        CertificateFactory certificateFactory = CertificateFactory.getInstance("X.509");
-        X509Certificate certificate = (X509Certificate) certificateFactory.generateCertificate(is);
+        X509Certificate certificate = decodeX509PublicCertificate(path);
         java.security.PublicKey publicKey = certificate.getPublicKey();
-        System.out.println(publicKey.getAlgorithm());
+        System.out.println("X509 Public Key Algorithm: " + publicKey.getAlgorithm());
+    }
+
+    public static X509Certificate decodeX509PublicCertificate(String filePath) throws Exception {
+        FileInputStream is = new FileInputStream(filePath);
+        CertificateFactory certificateFactory = CertificateFactory.getInstance("X.509");
+        return (X509Certificate) certificateFactory.generateCertificate(is);
     }
 }
