@@ -17,7 +17,7 @@ import java.util.Objects;
 
 public class PrivateKey {
 
-    private static final String keyFile = "encrypted-private.key";
+    private static final String keyFile = "encryptedPrivate.key";
 //    private static final String keyFile = "private.key";
     private static final String keyPassword = "ballerina";
 
