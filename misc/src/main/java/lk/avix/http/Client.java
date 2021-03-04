@@ -37,8 +37,10 @@ public class Client {
     public static void main(String[] args) throws Exception {
         String truststoreFile = Objects.requireNonNull(Client.class.getClassLoader().getResource(truststore)).getFile();
         String truststorePath = new File(truststoreFile).getAbsolutePath();
+        char[] truststorePass = truststorePassword.toCharArray();
         String keystoreFile = Objects.requireNonNull(Client.class.getClassLoader().getResource(keystore)).getFile();
         String keystorePath = new File(keystoreFile).getAbsolutePath();
+        char[] keystorePass = keystorePassword.toCharArray();
         String trustedCertFile = Objects.requireNonNull(Client.class.getClassLoader().getResource(trustedCert)).getFile();
         String trustedCertPath = new File(trustedCertFile).getAbsolutePath();
         String privateKeyFile = Objects.requireNonNull(Client.class.getClassLoader().getResource(privateKey)).getFile();
@@ -46,23 +48,28 @@ public class Client {
         String publicCertFile = Objects.requireNonNull(Client.class.getClassLoader().getResource(publicCert)).getFile();
         String publicCertPath = new File(publicCertFile).getAbsolutePath();
 
+        // Option 1: Trust all certificates
         SSLContext sslDisabledSslContext = initSslContext();
         sendRequest(sslDisabledSslContext);
 
-        SSLContext truststoreSslContext = initSslContext(truststorePath, truststorePassword.toCharArray());
+        // Option 2: Provide truststore and it's password
+        SSLContext truststoreSslContext = initSslContext(truststorePath, truststorePass);
         sendRequest(truststoreSslContext);
 
+        // Option 3: Provide trusted certificate file
         SSLContext trustedCertSslContext = initSslContext(trustedCertPath);
         sendRequest(trustedCertSslContext);
 
-        SSLContext mTlsSslContext1 = initSslContext(truststorePath, truststorePassword.toCharArray(), keystorePath,
-                                                    keystorePassword.toCharArray());
+        // Option 4: Provide truststore, it's password and keystore, it's password for mTLS
+        SSLContext mTlsSslContext1 = initSslContext(truststorePath, truststorePass, keystorePath, keystorePass);
         sendRequest(mTlsSslContext1);
 
+        // Option 5: Provide trusted certificate file, private key and public certificate for mTLS
         SSLContext mTlsSslContext2 = initSslContext(trustedCertPath, privateKeyPath, publicCertPath);
         sendRequest(mTlsSslContext2);
     }
 
+    // Init SSLContext by trusting all the certificates
     private static SSLContext initSslContext() throws NoSuchAlgorithmException, KeyManagementException {
         TrustManager[] trustAllCerts = new TrustManager[]{
                 new X509TrustManager() {
@@ -82,6 +89,7 @@ public class Client {
         return sslContext;
     }
 
+    // Init SSLContext with provided truststore and it's password
     private static SSLContext initSslContext(String truststorePath, char[] truststorePassword) throws Exception {
         try (FileInputStream is = new FileInputStream(truststorePath)) {
             KeyStore truststore = KeyStore.getInstance("PKCS12");
@@ -94,6 +102,7 @@ public class Client {
         }
     }
 
+    // Init SSLContext with provided trusted certificate file
     private static SSLContext initSslContext(String trustedCertPath) throws Exception {
         X509Certificate trustedCert = PublicKey.decodeX509PublicCertificate(trustedCertPath);
         KeyStore truststore = KeyStore.getInstance("PKCS12");
@@ -106,6 +115,7 @@ public class Client {
         return sslContext;
     }
 
+    // Init SSLContext with provided truststore, it's password and keystore, it's password for mTLS
     private static SSLContext initSslContext(String truststorePath, char[] truststorePassword, String keystorePath,
                                              char[] keystorePassword) throws Exception {
         try (FileInputStream truststoreIs = new FileInputStream(truststorePath);
@@ -126,6 +136,7 @@ public class Client {
         }
     }
 
+    // Init SSLContext with provided trusted certificate file, private key and public certificate for mTLS
     private static SSLContext initSslContext(String trustedCertPath, String privateKeyPath, String publicCertPath)
             throws Exception {
         X509Certificate trustedCert = PublicKey.decodeX509PublicCertificate(trustedCertPath);
@@ -150,6 +161,7 @@ public class Client {
         return sslContext;
     }
 
+    // Send HTTP request with provided SSLContext
     private static void sendRequest(SSLContext sslContext) throws Exception {
         HttpClient client = HttpClient.newBuilder()
                 .version(HttpClient.Version.HTTP_1_1)
