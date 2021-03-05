@@ -32,6 +32,7 @@ public class Client {
     private static final String keystorePassword = "ballerina";
     private static final String trustedCert = "x509Public.crt";
     private static final String privateKey = "pkcs8Private.key";
+    private static final String encryptedPrivateKey = "pkcs8EncryptedPrivate.key";
     private static final String publicCert = "x509Public.crt";
 
     public static void main(String[] args) throws Exception {
@@ -65,7 +66,7 @@ public class Client {
         sendRequest(mTlsSslContext1);
 
         // Option 5: Provide trusted certificate file, private key and public certificate for mTLS
-        SSLContext mTlsSslContext2 = initSslContext(trustedCertPath, privateKeyPath, publicCertPath);
+        SSLContext mTlsSslContext2 = initSslContext(trustedCertPath, publicCertPath, privateKeyPath, "");
         sendRequest(mTlsSslContext2);
     }
 
@@ -106,7 +107,7 @@ public class Client {
     private static SSLContext initSslContext(String trustedCertPath) throws Exception {
         X509Certificate trustedCert = PublicKey.decodeX509PublicCertificate(trustedCertPath);
         KeyStore truststore = KeyStore.getInstance("PKCS12");
-        truststore.load(null, truststorePassword.toCharArray());
+        truststore.load(null, "".toCharArray());
         truststore.setCertificateEntry(UUID.randomUUID().toString(), trustedCert);
         TrustManagerFactory tmf = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
         tmf.init(truststore);
@@ -137,24 +138,29 @@ public class Client {
     }
 
     // Init SSLContext with provided trusted certificate file, private key and public certificate for mTLS
-    private static SSLContext initSslContext(String trustedCertPath, String privateKeyPath, String publicCertPath)
-            throws Exception {
+    private static SSLContext initSslContext(String trustedCertPath, String publicCertPath, String privateKeyPath,
+                                             String privateKeyPassword) throws Exception {
         X509Certificate trustedCert = PublicKey.decodeX509PublicCertificate(trustedCertPath);
         KeyStore truststore = KeyStore.getInstance("PKCS12");
-        truststore.load(null, truststorePassword.toCharArray());
+        truststore.load(null, "".toCharArray());
         truststore.setCertificateEntry(UUID.randomUUID().toString(), trustedCert);
         TrustManagerFactory tmf = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
         tmf.init(truststore);
 
         Security.addProvider(new BouncyCastleProvider());
-        java.security.PrivateKey privateKey = PrivateKey.decodePkcs8PrivateKey(privateKeyPath);
+        java.security.PrivateKey privateKey;
+        if (privateKeyPassword == null || privateKeyPassword.isBlank()) {
+            privateKey = PrivateKey.decodePkcs8PrivateKey(privateKeyPath);
+        } else {
+            privateKey = PrivateKey.decodePkcs8EncryptedPrivateKey(privateKeyPath, privateKeyPassword.toCharArray());
+        }
         X509Certificate publicCert = PublicKey.decodeX509PublicCertificate(publicCertPath);
         KeyStore keyStore = KeyStore.getInstance("PKCS12");
-        keyStore.load(null, keystorePassword.toCharArray());
-        keyStore.setKeyEntry(UUID.randomUUID().toString(), privateKey, keystorePassword.toCharArray(),
+        keyStore.load(null, "".toCharArray());
+        keyStore.setKeyEntry(UUID.randomUUID().toString(), privateKey, "".toCharArray(),
                              new X509Certificate[]{publicCert});
         KeyManagerFactory kmf = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
-        kmf.init(keyStore, keystorePassword.toCharArray());
+        kmf.init(keyStore, "".toCharArray());
 
         SSLContext sslContext = SSLContext.getInstance("TLS");
         sslContext.init(kmf.getKeyManagers(), tmf.getTrustManagers(), new SecureRandom());
@@ -168,7 +174,7 @@ public class Client {
                 .sslContext(sslContext)
                 .build();
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("https://localhost:9090/oauth2/jwks"))
+                .uri(URI.create("https://localhost:9090/foo/bar"))
                 .build();
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
         System.out.println("Status Code: " + response.statusCode());
