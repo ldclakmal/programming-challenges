@@ -20,29 +20,29 @@ import java.util.Objects;
 
 public class PrivateKey {
 
-    private static final String pkcs8EncryptedPrivateKey = "pkcs8EncryptedPrivate.key";
-    private static final String pkcs1EncryptedPrivateKey = "pkcs1EncryptedPrivate.key";
-    private static final String pkcs8PrivateKey = "pkcs8Private.key";
+    private static final String encryptedPrivateKey = "encryptedPrivate.key";
+    private static final String encryptedKeyPair = "eEncryptedKeyPair.pem";
+    private static final String privateKey = "private.key";
     private static final String keyPassword = "ballerina";
 
     public static void main(String[] args) throws Exception {
         Security.addProvider(new BouncyCastleProvider());
-        String pkcs8EncryptedFilePath = Objects.requireNonNull(
-                Client.class.getClassLoader().getResource(pkcs8EncryptedPrivateKey)).getFile();
-        String pkcs1EncryptedFilePath = Objects.requireNonNull(
-                Client.class.getClassLoader().getResource(pkcs1EncryptedPrivateKey)).getFile();
-        String pkcs8FilePath = Objects.requireNonNull(
-                Client.class.getClassLoader().getResource(pkcs8PrivateKey)).getFile();
+        String encryptedPrivateKeyFilePath = Objects.requireNonNull(
+                Client.class.getClassLoader().getResource(encryptedPrivateKey)).getFile();
+        String encryptedKeyPairFilePath = Objects.requireNonNull(
+                Client.class.getClassLoader().getResource(encryptedKeyPair)).getFile();
+        String privateKeyFilePath = Objects.requireNonNull(
+                Client.class.getClassLoader().getResource(privateKey)).getFile();
         char[] passphrase = keyPassword.toCharArray();
-        java.security.PrivateKey pkcs8EncryptedPrivateKey = decodePkcs8EncryptedPrivateKey(pkcs8EncryptedFilePath, passphrase);
-        java.security.PrivateKey pkcs1EncryptedPrivateKey = decodePkcs1EncryptedPrivateKey(pkcs1EncryptedFilePath, passphrase);
-        java.security.PrivateKey pkcs8PrivateKey = decodePkcs8PrivateKey(pkcs8FilePath);
-        System.out.println("PKCS8 Encrypted Private Key Algorithm: " + pkcs8EncryptedPrivateKey.getAlgorithm());
-        System.out.println("PKCS1 Encrypted Private Key Algorithm: " + pkcs1EncryptedPrivateKey.getAlgorithm());
-        System.out.println("PKCS8 Private Key Algorithm: " + pkcs8PrivateKey.getAlgorithm());
+        java.security.PrivateKey privateKey1 = decodeEncryptedPrivateKey(encryptedPrivateKeyFilePath, passphrase);
+        java.security.PrivateKey privateKey2 = decodeEncryptedKeyPair(encryptedKeyPairFilePath, passphrase);
+        java.security.PrivateKey privateKey3 = decodePrivateKey(privateKeyFilePath);
+        System.out.println("Private Key 1 Algorithm: " + privateKey1.getAlgorithm());
+        System.out.println("Private Key 2 Algorithm: " + privateKey2.getAlgorithm());
+        System.out.println("Private Key 3 Algorithm: " + privateKey3.getAlgorithm());
     }
 
-    public static java.security.PrivateKey decodePkcs8EncryptedPrivateKey(String keyPath, char[] keyPassphrase) throws Exception {
+    public static java.security.PrivateKey decodeEncryptedPrivateKey(String keyPath, char[] keyPassphrase) throws Exception {
         File privateKeyFile = new File(keyPath);
         PEMParser pemParser = new PEMParser(new FileReader(privateKeyFile));
         Object obj = pemParser.readObject();
@@ -53,7 +53,7 @@ public class PrivateKey {
         return converter.getPrivateKey(privateKeyInfo);
     }
 
-    private static java.security.PrivateKey decodePkcs1EncryptedPrivateKey(String keyPath, char[] keyPassphrase) throws Exception {
+    private static java.security.PrivateKey decodeEncryptedKeyPair(String keyPath, char[] keyPassphrase) throws Exception {
         File privateKeyFile = new File(keyPath);
         PEMParser pemParser = new PEMParser(new FileReader(privateKeyFile));
         Object obj = pemParser.readObject();
@@ -65,7 +65,7 @@ public class PrivateKey {
         return converter.getPrivateKey(privateKeyInfo);
     }
 
-    public static java.security.PrivateKey decodePkcs8PrivateKey(String keyPath) throws Exception {
+    public static java.security.PrivateKey decodePrivateKey(String keyPath) throws Exception {
         File privateKeyFile = new File(keyPath);
         PEMParser pemParser = new PEMParser(new FileReader(privateKeyFile));
         Object obj = pemParser.readObject();

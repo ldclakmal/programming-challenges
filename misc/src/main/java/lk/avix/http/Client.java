@@ -26,13 +26,13 @@ import javax.net.ssl.X509TrustManager;
 
 public class Client {
 
-    private static final String truststore = "pkcs12Truststore.p12";
+    private static final String truststore = "truststore.p12";
     private static final String truststorePassword = "ballerina";
-    private static final String keystore = "pkcs12Keystore.p12";
+    private static final String keystore = "keystore.p12";
     private static final String keystorePassword = "ballerina";
     private static final String trustedCert = "x509Public.crt";
-    private static final String privateKey = "pkcs8Private.key";
-    private static final String encryptedPrivateKey = "pkcs8EncryptedPrivate.key";
+    private static final String privateKey = "private.key";
+    private static final String encryptedPrivateKey = "encryptedPrivate.key";
     private static final String publicCert = "x509Public.crt";
 
     public static void main(String[] args) throws Exception {
@@ -150,9 +150,9 @@ public class Client {
         Security.addProvider(new BouncyCastleProvider());
         java.security.PrivateKey privateKey;
         if (privateKeyPassword == null || privateKeyPassword.isBlank()) {
-            privateKey = PrivateKey.decodePkcs8PrivateKey(privateKeyPath);
+            privateKey = PrivateKey.decodePrivateKey(privateKeyPath);
         } else {
-            privateKey = PrivateKey.decodePkcs8EncryptedPrivateKey(privateKeyPath, privateKeyPassword.toCharArray());
+            privateKey = PrivateKey.decodeEncryptedPrivateKey(privateKeyPath, privateKeyPassword.toCharArray());
         }
         X509Certificate publicCert = PublicKey.decodeX509PublicCertificate(publicCertPath);
         KeyStore keyStore = KeyStore.getInstance("PKCS12");
