@@ -1,5 +1,3 @@
 # Programming Challenges
 
-https://www.hackerrank.com
-
-https://leetcode.com
+The examples, use-cases, resources related to different kind of programming challenges with Java.
